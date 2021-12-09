@@ -28,13 +28,15 @@ jobs:
           java-version: 8
       - name: 'Build Driver'
         run: |
-          ./gradlew --no-parallel --no-daemon -x test build
+          ./gradlew --no-parallel --no-daemon -x test package
       - name: 'Install GPG Secret Key'
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v4
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
       - name: 'Sign Jars'
         run: |
           export GPG_TTY=$(tty)
