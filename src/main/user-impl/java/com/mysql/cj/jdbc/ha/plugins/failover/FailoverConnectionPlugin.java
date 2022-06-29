@@ -254,6 +254,11 @@ public class FailoverConnectionPlugin implements IConnectionPlugin {
 
     performSpecialMethodHandlingIfRequired(args, methodName);
 
+    updateTopologyAndConnectIfNeeded(true);
+    if (!isExplicitlyReadOnly() && !this.hosts.get(0).equals(this.currentConnectionProvider.getCurrentHostInfo())) {
+      connectTo(WRITER_CONNECTION_INDEX);
+    }
+
     return result;
   }
 
